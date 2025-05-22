@@ -1,0 +1,76 @@
+"Name" = 'PLDlang'
+"Author" = 'Hazem'
+"Version" = '1.0'
+"Start Symbol" = 'program'
+"Case Sensitive" = 'False'
+
+
+
+LET         = 'let'
+IF          = 'if'
+ELSE        = 'else'
+END         = 'end'
+FOR         = 'for'
+IN          = 'in'
+PRINT       = 'print'
+DOTDOT      = '..'
+EQUAL       = '='
+EQ          = '=='
+NEQ         = '!='
+LT          = '<'
+GT          = '>'
+LE          = '<='
+GE          = '>='
+OP_PLUS     = '+'
+OP_MINUS    = '-'
+OP_MUL      = '*'
+OP_DIV      = '/'
+LPAREN      = '('
+RPAREN      = ')'
+
+IDENTIFIER  = {Letter} ({Letter} | {Digit})*
+NUMBER      = {Digit}+ ('.' {Digit}+)?
+STRING      = '"' ({Letter} | {Digit} | ' ')* '"'
+
+NEWLINE     = '\n'
+
+
+
+<program>         ::= <statement_list>
+<statement_list>  ::= <statement>
+                   | <statement_list> NEWLINE <statement>
+
+<statement>       ::= <assignment>
+                   | <print_stmt>
+                   | <if_stmt>
+                   | <loop_stmt>
+
+<assignment>      ::= LET IDENTIFIER EQUAL <expression>
+
+<print_stmt>      ::= PRINT LPAREN <expression> RPAREN
+
+<if_stmt>         ::= IF <condition> NEWLINE <statement_list> END
+                   | IF <condition> NEWLINE <statement_list> ELSE NEWLINE <statement_list> END
+
+<loop_stmt>       ::= FOR IDENTIFIER IN NUMBER DOTDOT NUMBER NEWLINE <statement_list> END
+
+<condition>       ::= <expression> EQ <expression>
+                   | <expression> NEQ <expression>
+                   | <expression> LT <expression>
+                   | <expression> GT <expression>
+                   | <expression> LE <expression>
+                   | <expression> GE <expression>
+
+<expression>      ::= <expression> OP_PLUS <term>
+                   | <expression> OP_MINUS <term>
+                   | <term>
+
+<term>            ::= <term> OP_MUL <factor>
+                   | <term> OP_DIV <factor>
+                   | <factor>
+
+<factor>          ::= IDENTIFIER
+                   | NUMBER
+                   | STRING
+                   | LPAREN <expression> RPAREN
+
